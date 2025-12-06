@@ -66,10 +66,10 @@ class OomolTaskClient:
     def await_result(
         self,
         task_id: str,
-        interval_ms: int = 2000,
+        interval_ms: int = 3000,
         timeout_ms: Optional[int] = None,
-        backoff_strategy: BackoffStrategy = BackoffStrategy.FIXED,
-        max_interval_ms: int = 15000,
+        backoff_strategy: BackoffStrategy = BackoffStrategy.EXPONENTIAL,
+        max_interval_ms: int = 3000,
         on_progress: Optional[Callable[[Optional[float], str], None]] = None
     ) -> Dict[str, Any]:
         """
@@ -117,10 +117,10 @@ class OomolTaskClient:
         input_values: InputValues,
         webhook_url: Optional[str] = None,
         metadata: Optional[Metadata] = None,
-        interval_ms: int = 2000,
+        interval_ms: int = 3000,
         timeout_ms: Optional[int] = None,
-        backoff_strategy: BackoffStrategy = BackoffStrategy.FIXED,
-        max_interval_ms: int = 15000,
+        backoff_strategy: BackoffStrategy = BackoffStrategy.EXPONENTIAL,
+        max_interval_ms: int = 3000,
         on_progress: Optional[Callable[[Optional[float], str], None]] = None
     ) -> Tuple[str, Dict[str, Any]]:
         """
