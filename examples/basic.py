@@ -4,7 +4,7 @@ import os
 # Add src to path so we can import the package without installing it
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../src")))
 
-from oomol_cloud_task import OomolTaskClient, BackoffStrategy
+from oomol_cloud_task import OomolTaskClient
 
 def main():
     client = OomolTaskClient(api_key="YOUR_API_KEY")
@@ -21,9 +21,6 @@ def main():
                 "optimize_images": False,
                 "remove_metadata": None,
             },
-            interval_ms=2000,
-            backoff_strategy=BackoffStrategy.EXPONENTIAL,
-            max_interval_ms=10000,
             on_progress=lambda p, s: print(f"Task in progress: status={s} progress={p or 0}%")
         )
         

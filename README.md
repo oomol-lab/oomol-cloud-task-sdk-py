@@ -16,7 +16,7 @@ pip install oomol-cloud-task-sdk
 ## Quick Start
 
 ```python
-from oomol_cloud_task import OomolTaskClient, BackoffStrategy
+from oomol_cloud_task import OomolTaskClient
 
 client = OomolTaskClient(api_key="YOUR_API_KEY")
 
@@ -84,11 +84,11 @@ Polls for the task result until completion or timeout.
 ```python
 result = client.await_result(
     task_id="your-task-id",
-    interval_ms=3000,           # polling interval (default: 3000)
-    timeout_ms=60000,           # optional timeout
-    backoff_strategy=BackoffStrategy.EXPONENTIAL,
-    max_interval_ms=3000,       # max interval for exponential backoff
-    on_progress=callback_fn     # optional progress callback
+    interval_ms=3000,                         # default: 3000
+    timeout_ms=60000,                         # optional
+    backoff_strategy=BackoffStrategy.EXPONENTIAL,  # default: EXPONENTIAL
+    max_interval_ms=3000,                     # default: 3000
+    on_progress=callback_fn                   # optional
 )
 ```
 
@@ -102,10 +102,10 @@ task_id, result = client.create_and_wait(
     input_values={"key": "value"},
     webhook_url=None,           # optional
     metadata=None,              # optional
-    interval_ms=3000,
+    interval_ms=3000,           # default: 3000
     timeout_ms=None,
-    backoff_strategy=BackoffStrategy.EXPONENTIAL,
-    max_interval_ms=3000,
+    backoff_strategy=BackoffStrategy.EXPONENTIAL,  # default: EXPONENTIAL
+    max_interval_ms=3000,       # default: 3000
     on_progress=None
 )
 ```

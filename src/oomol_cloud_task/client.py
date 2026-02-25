@@ -1,8 +1,8 @@
 import time
 import requests
-from typing import Optional, Callable, Dict, Any, Tuple
+from typing import Optional, Dict, Any, Tuple
 from .errors import ApiError, TaskFailedError, TimeoutError
-from .types import BackoffStrategy, TaskStatus, InputValues, Metadata
+from .types import BackoffStrategy, TaskStatus, InputValues, Metadata, ProgressCallback, TaskResult
 
 DEFAULT_BASE_URL = "https://cloud-task.oomol.com/v1"
 
@@ -49,7 +49,7 @@ class OomolTaskClient:
         data = response.json()
         return data["taskID"]
 
-    def get_task_result(self, task_id: str) -> Dict[str, Any]:
+    def get_task_result(self, task_id: str) -> TaskResult:
         """
         Fetches the result of a task.
         """
@@ -70,10 +70,19 @@ class OomolTaskClient:
         timeout_ms: Optional[int] = None,
         backoff_strategy: BackoffStrategy = BackoffStrategy.EXPONENTIAL,
         max_interval_ms: int = 3000,
-        on_progress: Optional[Callable[[Optional[float], str], None]] = None
-    ) -> Dict[str, Any]:
+        on_progress: Optional[ProgressCallback] = None
+    ) -> TaskResult:
         """
         Polls for the task result until completion or timeout.
+
+        Args:
+            task_id: The task ID returned by create_task.
+            interval_ms: Base polling interval in milliseconds. Defaults to 3000.
+            timeout_ms: Optional max wait time in milliseconds.
+            backoff_strategy: Polling backoff strategy. Defaults to EXPONENTIAL.
+            max_interval_ms: Max interval in milliseconds when using exponential backoff.
+                Defaults to 3000.
+            on_progress: Optional callback called with (progress, status) on each poll.
         """
         start_time = time.time()
         attempt = 0
@@ -121,8 +130,8 @@ class OomolTaskClient:
         timeout_ms: Optional[int] = None,
         backoff_strategy: BackoffStrategy = BackoffStrategy.EXPONENTIAL,
         max_interval_ms: int = 3000,
-        on_progress: Optional[Callable[[Optional[float], str], None]] = None
-    ) -> Tuple[str, Dict[str, Any]]:
+        on_progress: Optional[ProgressCallback] = None
+    ) -> Tuple[str, TaskResult]:
         """
         Creates a task and waits for its completion.
         Returns (task_id, result).

@@ -1,6 +1,6 @@
 from .client import OomolTaskClient
 from .errors import ApiError, TaskFailedError, TimeoutError
-from .types import BackoffStrategy, TaskStatus
+from .types import BackoffStrategy, TaskStatus, ProgressCallback
 
 __all__ = [
     "OomolTaskClient",
@@ -9,4 +9,5 @@ __all__ = [
     "TimeoutError",
     "BackoffStrategy",
     "TaskStatus",
+    "ProgressCallback",
 ]
